@@ -26,9 +26,9 @@ public class Globals {
         	  DB_TYPE.put("QA","QA");        	  
           }
 	  	   // FOR CI 
-          
-          public static final String GC_EXECUTION_ENVIRONMENT=System.getProperty("env").toUpperCase();
           public static final String GC_COLNAME_TEST_ENV="TEST_ENV";
+          public static final String GC_EXECUTION_ENVIRONMENT=System.getProperties().containsKey("env")?System.getProperty("env").toUpperCase(): Stock.getConfigParam(GC_COLNAME_TEST_ENV);
+
 
           
 		//SpreadSheet
@@ -121,22 +121,17 @@ public class Globals {
                          
         //AAG Managed Accounts
           public static final String GC_LOG_FILE_VALIDATION_MESSAGE="Successful-> "+"[1-9].*";
-          public static final String GC_PROSPECT_LOG_FILE_PATTERN="prospect_";
-          public static final String GC_MEMBER_LOG_FILE_PATTERN="member_";
-          public static final String GC_ENROLL_CANCEL_LOG_FILE_PATTERN="enroll_";
-          public static final String GC_TRANSACTION_LOG_FILE_PATTERN="transaction_";
-          public static final String GC_TRANSACTION_COINFIRMATION_LOG_FILE_PATTERN="txnconf_";
-  //QA 
-//          public static final String GC_PROSPECT_LOG_FILE_PATTERN="qaprospect_";
-//          public static final String GC_MEMBER_LOG_FILE_PATTERN="qamember_";
-//          public static final String GC_ENROLL_CANCEL_LOG_FILE_PATTERN="qaenroll_";
-//          public static final String GC_TRANSACTION_LOG_FILE_PATTERN="qatransaction_";
-//          public static final String GC_TRANSACTION_COINFIRMATION_LOG_FILE_PATTERN="qatxnconf_";   
-        
+          //Log File Patterns
+          public static String GC_PROSPECT_LOG_FILE_PATTERN="";
+          public static String GC_MEMBER_LOG_FILE_PATTERN="";
+          public static String GC_ENROLL_CANCEL_LOG_FILE_PATTERN="";
+          public static String GC_TRANSACTION_LOG_FILE_PATTERN="";
+          public static String GC_TRANSACTION_COINFIRMATION_LOG_FILE_PATTERN="";
+          public static int GC_SELECT_ENVIRONMENT=0;
+          public static String GC_SELECT_FOLDER_FOR_RUNNING_JOB=""; 
           public static final String GC_LOG_FILE_TYPE=".log";
           public static final String GC_FILE_TYPE=".xml";
-  	    public static final String GC_Database_Prefix="D_";
-//    	  public static final String GC_Database_Prefix="Q_";
+  	   public static String GC_Database_Prefix="";
 
     	  public static final String GC_TRANSACTION_FUTURE_STATUS="FUTURE";
     	  public static final String GC_TRANSACTION_COMPLETE_STATUS="COMPLETE";
