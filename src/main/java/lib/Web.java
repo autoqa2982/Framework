@@ -560,7 +560,8 @@ public class Web {
 		while (lstIter.hasNext()) {
 			WebElement currElement = lstIter.next();
 			String txt = currElement.getText();
-			if (txt.toUpperCase().contains(itemValue.toUpperCase())) {
+			//if (txt.toUpperCase().contains(itemValue.toUpperCase())) {
+			if (txt.toUpperCase().equalsIgnoreCase(itemValue.toUpperCase())) {
 				selected = true;
 				break;
 			}
