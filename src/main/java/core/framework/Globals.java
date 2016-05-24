@@ -23,7 +23,8 @@ public class Globals {
           static{
         	  DB_TYPE = new HashMap<String,String>();
         	  DB_TYPE.put("PROJ","DEV");
-        	  DB_TYPE.put("QA","QA");        	  
+        	  DB_TYPE.put("QA","QA");
+        	  DB_TYPE.put("PROD","PROD");  
           }
 	  	   // FOR CI 
           public static final String GC_COLNAME_TEST_ENV="TEST_ENV";

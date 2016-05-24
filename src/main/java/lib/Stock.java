@@ -46,12 +46,15 @@ public class Stock {
 		return dataProviderIterations;
 	}
 	
-	private static String checkEnv(String envName){
-		if(envName.contains("PROJ")){
+	private static String checkEnv(String envName) {
+		if (envName.contains("PROJ")) {
 			return Globals.DB_TYPE.get("PROJ");
 		}
-		if(envName.contains("QA")){
+		if (envName.contains("QA")) {
 			return Globals.DB_TYPE.get("QA");
+		}
+		if (envName.contains("PROD")) {
+			return Globals.DB_TYPE.get("PROD");
 		}
 		return null;
 	}
