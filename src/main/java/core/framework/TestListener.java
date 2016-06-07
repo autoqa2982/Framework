@@ -30,13 +30,13 @@ public class TestListener implements ITestListener, IConfigurationListener2, ISu
 	
 	public void onStart(ISuite suite) {
 		try{
-			Stock.getParam(Globals.GC_TESTCONFIGLOC+
-			Globals.GC_CONFIGFILEANDSHEETNAME + ".xls");
+//			Stock.getParam(Globals.GC_TESTCONFIGLOC+
+//			Globals.GC_CONFIGFILEANDSHEETNAME + ".xls");
 			if(!Globals.GC_EXECUTION_ENVIRONMENT.isEmpty())
             {
-            Stock.setConfigParam(Globals.GC_COLNAME_TEST_ENV, Globals.GC_EXECUTION_ENVIRONMENT, true);
+				Stock.setConfigParam(Globals.GC_COLNAME_TEST_ENV, Globals.GC_EXECUTION_ENVIRONMENT, true);
+				System.out.println("Execution Environment : "+Globals.GC_EXECUTION_ENVIRONMENT);
             }
-
 			Log.Report(Level.INFO,"Test Configuration initialized successfully");
 		}catch(Exception e){
 			ThrowException.Report(TYPE.EXCEPTION,e.getMessage());			
@@ -84,6 +84,7 @@ public class TestListener implements ITestListener, IConfigurationListener2, ISu
 
 	
 	public void onTestFailedButWithinSuccessPercentage(ITestResult result) {
+		
 	}
 
 	
@@ -93,6 +94,7 @@ public class TestListener implements ITestListener, IConfigurationListener2, ISu
 
 	
 	public void onConfigurationSuccess(ITestResult result) {
+		
 	}
 
 	
@@ -102,10 +104,12 @@ public class TestListener implements ITestListener, IConfigurationListener2, ISu
 
 	
 	public void onConfigurationSkip(ITestResult result) {
+		
 	}
 
 	
 	public void beforeConfiguration(ITestResult result) {
+		
 	}
 
 	

@@ -3,12 +3,13 @@ package core.framework;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
+
 import lib.Stock;
 
 
 public class Globals {
        
-    // General
+    	//General
           public static final String GC_EMPTY = "";
           public static final boolean GC_FALSE = false;
           public static final boolean GC_TRUE = true;
@@ -19,18 +20,16 @@ public class Globals {
           public static final String GC_VAL_RUNALLITR = "ALL";
           public static final String GC_AUT_TYPE = "WEB";
           public static final Map<String,String> DB_TYPE;
+          public static final String GC_COLNAME_TEST_ENV="TEST_ENV";
+          
+        //Environment MAP for DB
           static{
         	  DB_TYPE = new HashMap<String,String>();
         	  DB_TYPE.put("PROJ","DEV");
         	  DB_TYPE.put("QA","QA");
         	  DB_TYPE.put("PROD","PROD");  
           }
-	  	   // FOR CI 
-          public static final String GC_COLNAME_TEST_ENV="TEST_ENV";
-          public static final String GC_EXECUTION_ENVIRONMENT=System.getProperties().containsKey("env")?System.getProperty("env").toUpperCase(): Stock.getConfigParam(GC_COLNAME_TEST_ENV);
-
-
-          
+                    	  											
 		//SpreadSheet
           public static final String GC_CONFIGFILEANDSHEETNAME = "testexecutionconfig";
           public static final String GC_DATASHEET_ERR = "Sheet not found";
@@ -52,14 +51,13 @@ public class Globals {
           public static final String GC_COLNAME_CLASSPATH = "ClassPath";
           public static String GC_OBJECT_SYNC_TIMEOUT = null ;
           
-    //FileLocations
+        //FileLocations
           public static final String GC_TESTCASESLOC = System.getProperty("user.dir")+"\\RunOrderSheets\\";
           public static final String GC_TESTDATALOC = System.getProperty("user.dir")+"\\TestData\\";
           public static final String GC_TESTNG_XML_PATH = System.getProperty("user.dir")+"\\RunXML";
           public static final String GC_PROJECT_BIN_DIR = System.getProperty("user.dir")+"\\bin";         
           public static final String GC_TESTCASE_RELPATH =  ".testcases.";
           public static final String GC_LISTENERS_CLASSNAME =  "core.framework.TestListener";      
-        //  public static final String GC_APP_RELPATH =  "app.";
           public static final String GC_PROJECT_DIR = System.getProperty("user.dir")+"\\";
           public static final String GC_TESTCONFIGLOC = GC_PROJECT_DIR;
           public static final String GC_TESTNG_TEST_OUTPUT = System.getProperty("user.dir")+"\\test-output";
@@ -70,9 +68,7 @@ public class Globals {
           public static final String GC_TEST_REPORT_FONTS_RESOURCE = GC_TEST_REPORT_RESOURCE+"FONTS";
           public static final String GC_TEST_REPORT_HTML_RESOURCE = GC_TEST_REPORT_RESOURCE+"HTML";
           public static final String GC_TEST_REPORT_IMG_RESOURCE = GC_TEST_REPORT_RESOURCE+"IMG";
-          public static String GBL_SuiteName = "";
-          
-//          public static String GBL_REPLACE_EXISTING_HTML_REPORT = "true";
+          public static String GBL_SuiteName = "";                    
           public static String GBL_REPLACE_EXISTING_HTML_REPORT = Stock.getConfigParam("Overwrite_Existing_Report");
           public static String GBL_TestCaseName = "";
           public static int GBL_CurrentIterationNumber = 1;
@@ -80,7 +76,18 @@ public class Globals {
           public static Exception exception = null;
           public static AssertionError assertionerror = null;
           public  static Error error = null;
+         
+         //Reading config
+          static{
+        	  	Stock.getParam(Globals.GC_TESTCONFIGLOC+Globals.GC_CONFIGFILEANDSHEETNAME + ".xls"); 
+          }
           
+          
+ 	  	 //CI         
+       	  public static final String GC_EXECUTION_ENVIRONMENT = System.getProperties().containsKey("env")?
+       			  												System.getProperty("env").toUpperCase()  :
+       			  												Stock.getConfigParam(GC_COLNAME_TEST_ENV); 
+                             
         //XML  
           public static final String GC_XML_SUITE = "suite";
           public static final String GC_XML_TEST = "test";
@@ -131,7 +138,7 @@ public class Globals {
           public static String GC_SELECT_FOLDER_FOR_RUNNING_JOB=""; 
           public static final String GC_LOG_FILE_TYPE=".log";
           public static final String GC_FILE_TYPE=".xml";
-  	   public static String GC_Database_Prefix="";
+          public static String GC_Database_Prefix="";
 
     	  public static final String GC_TRANSACTION_FUTURE_STATUS="FUTURE";
     	  public static final String GC_TRANSACTION_COMPLETE_STATUS="COMPLETE";
@@ -170,6 +177,8 @@ public class Globals {
     	  public static final String GC_TRANSACTION_CONFIRMATION_FILE_NAMEPATTERN="ma_empower_txnec_";
           
     	  public static final Map<String, String> databaseConnectionStrings;
+    	 
+    	  //setting DB connection string 
     	  static
     	  {
   	    	databaseConnectionStrings = new Hashtable<String, String>();
@@ -193,5 +202,8 @@ public class Globals {
   	    	databaseConnectionStrings.put("Q_INST", "jdbc:oracle:thin:@qinstdb:1521/qinstmain.isis.gwl.com");
   	    	databaseConnectionStrings.put("Q_IN02", "jdbc:oracle:thin:@qin02db:1521/qin02main.isis.gwl.com");
   	    	databaseConnectionStrings.put("Q_ISIS", "jdbc:oracle:thin:@qisisdb:1521/QISISMAIN.ISIS.GWL.COM");
-  	    	}
+  	      }
+    	  
+    	
+    	  
 }
