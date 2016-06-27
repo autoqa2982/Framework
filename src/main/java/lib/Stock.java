@@ -1,9 +1,14 @@
 package lib;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -200,30 +205,31 @@ public class Stock {
 	}
 
 	public static void getParam(String configPath) {
-		String key = Globals.GC_EMPTY;
-		String val = Globals.GC_EMPTY;
-		XL_ReadWrite xlRW = null;
-		if (globalParam.isEmpty()) {
-			try {
-				xlRW = new XL_ReadWrite(configPath);
-				Log.Report(Level.INFO, "reading " + configPath + " file");
-				for (int iConfLoop = 0; iConfLoop < xlRW.getRowCount(Globals.GC_CONFIGFILEANDSHEETNAME)
-						- 1; iConfLoop++) {
-					key = xlRW.getCellData(Globals.GC_CONFIGFILEANDSHEETNAME, iConfLoop + 1, Globals.GC_COLNAME_CONFIG)
-							.trim();
-					val = xlRW.getCellData(Globals.GC_CONFIGFILEANDSHEETNAME, iConfLoop + 1, Globals.GC_COLNAME_VALUE)
-							.trim();
-
-					globalParam.put(key.trim().toUpperCase(), val);
-					Log.Report(Level.DEBUG, "setting @globalParam with key :" + key + " -- value :" + val);
-				}
-				globalParam.remove(Globals.GC_EMPTY);
-				xlRW.clearXL();
-				xlRW = null;
-			} catch (Exception e) {
-				ThrowException.Report(TYPE.EXCEPTION, "Unable to read Config :" + e.getMessage());
-			}
-		}
+//		String key = Globals.GC_EMPTY;
+//		String val = Globals.GC_EMPTY;
+//		XL_ReadWrite xlRW = null;
+//		if (globalParam.isEmpty()) {
+//			try {
+//				xlRW = new XL_ReadWrite(configPath);
+//				Log.Report(Level.INFO, "reading " + configPath + " file");
+//				for (int iConfLoop = 0; iConfLoop < xlRW.getRowCount(Globals.GC_CONFIGFILEANDSHEETNAME)
+//						- 1; iConfLoop++) {
+//					key = xlRW.getCellData(Globals.GC_CONFIGFILEANDSHEETNAME, iConfLoop + 1, Globals.GC_COLNAME_CONFIG)
+//							.trim();
+//					val = xlRW.getCellData(Globals.GC_CONFIGFILEANDSHEETNAME, iConfLoop + 1, Globals.GC_COLNAME_VALUE)
+//							.trim();
+//
+//					globalParam.put(key.trim().toUpperCase(), val);
+//					Log.Report(Level.DEBUG, "setting @globalParam with key :" + key + " -- value :" + val);
+//				}
+//				globalParam.remove(Globals.GC_EMPTY);
+//				xlRW.clearXL();
+//				xlRW = null;
+//			} catch (Exception e) {
+//				ThrowException.Report(TYPE.EXCEPTION, "Unable to read Config :" + e.getMessage());
+//			}
+//		}
+		readConfigProperty(configPath);
 	}
 	
 	public static String GetParameterValue(String strParamName) {
@@ -297,6 +303,62 @@ public class Stock {
 		iterationNumber++;
 		return globalTestData.get(index);
 	}
+	
+	public static Map<String, String> getGlobalParam() {
+		return globalParam;
+	}
+
+	public static void setGlobalParam(Map<String, String> globalParam) {
+		Stock.globalParam = globalParam;
+	}
+
+	
+	/**
+    * <pre>
+    * Method to read Config property file to get all the config parameter into 
+    * <b>globalparam<String,String> </b> Map,whichis being used to get Config paramaeter.
+    * </pre>
+    * 
+    * @param configPath<pre>
+    * This indicates the <b>testexecutionconfig.properties</b> file location
+    * </pre>
+    * @author ranjan
+    */
+    public static void readConfigProperty(String configPath) {
+           Properties prop = new Properties();
+           InputStream ins = null;
+           if (getGlobalParam().isEmpty()) {
+                  try {
+                        ins = new FileInputStream(configPath);
+                        Log.Report(Level.INFO, "reading " + configPath + " file");
+                        prop.load(ins);
+                        Enumeration<?> e = prop.propertyNames();
+                        while (e.hasMoreElements()) {
+                               String key =  (String) e.nextElement();
+                               String val = prop.getProperty(key);
+                               Stock.getGlobalParam().put(
+                                             key.toString().trim().toUpperCase(), val);
+                               Log.Report(Level.DEBUG, "setting @globalParam with key :"
+                                             + key + " -- value :" + val);
+                               Stock.getGlobalParam().remove(Globals.GC_EMPTY);
+                        }
+                  } catch (IOException ex) {
+                        ex.printStackTrace();
+                  } catch (Exception e) {
+                        ThrowException.Report(TYPE.EXCEPTION, "Unable to read Config :"
+                                      + e.getMessage());
+                  } finally {
+                        if (ins != null) {
+                               try {
+                                      ins.close();
+                               } catch (IOException e) {
+                                      e.printStackTrace();
+                               }
+                        }
+                  }
+           }
+    }
+
 
 	
 	
