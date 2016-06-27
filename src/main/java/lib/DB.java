@@ -39,7 +39,6 @@ public class DB {
 	}
 	
 
-	
 	public static int executeUpdate(String dbName,String query,String... queryParameterValues) throws Exception{
 		
 		int recordsUpdated = 0;
@@ -169,9 +168,7 @@ public class DB {
 				}
 			} catch (SQLException e) {
 			   throw new Exception ("list<Connections> :- a list containing db connections did not close properly");
-			}
-			
-			
+			}	
 		}
 		recordSetsIterator.remove();
 		
