@@ -264,35 +264,6 @@ public class Stock {
 	}
 
 	public static void getParam(String configPath) {
-		// String key = Globals.GC_EMPTY;
-		// String val = Globals.GC_EMPTY;
-		// XL_ReadWrite xlRW = null;
-		// if (globalParam.isEmpty()) {
-		// try {
-		// xlRW = new XL_ReadWrite(configPath);
-		// Log.Report(Level.INFO, "reading " + configPath + " file");
-		// for (int iConfLoop = 0; iConfLoop <
-		// xlRW.getRowCount(Globals.GC_CONFIGFILEANDSHEETNAME)
-		// - 1; iConfLoop++) {
-		// key = xlRW.getCellData(Globals.GC_CONFIGFILEANDSHEETNAME, iConfLoop +
-		// 1, Globals.GC_COLNAME_CONFIG)
-		// .trim();
-		// val = xlRW.getCellData(Globals.GC_CONFIGFILEANDSHEETNAME, iConfLoop +
-		// 1, Globals.GC_COLNAME_VALUE)
-		// .trim();
-		//
-		// globalParam.put(key.trim().toUpperCase(), val);
-		// Log.Report(Level.DEBUG, "setting @globalParam with key :" + key +
-		// " -- value :" + val);
-		// }
-		// globalParam.remove(Globals.GC_EMPTY);
-		// xlRW.clearXL();
-		// xlRW = null;
-		// } catch (Exception e) {
-		// ThrowException.Report(TYPE.EXCEPTION, "Unable to read Config :" +
-		// e.getMessage());
-		// }
-		// }
 		readConfigProperty(configPath);
 	}
 
@@ -377,7 +348,7 @@ public class Stock {
 	/**
 	 * <pre>
 	 * Method to read Config property file to get all the config parameter into 
-	 * <b>globalparam<String,String> </b> Map,whichis being used to get Config paramaeter.
+	 * <b>globalparam<String,String> </b> Map,which is being used to get Config paramaeter.
 	 * </pre>
 	 * 
 	 * @param configPath
