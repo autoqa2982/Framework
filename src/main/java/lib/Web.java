@@ -551,7 +551,7 @@ public class Web {
 	 * @param itemValue
 	 *            - Value of the item listed in Dropdown box
 	 */
-	private static int getDropDownItemIndex(String itemValue) {
+	private static int getDropDownItemIndex(String itemValue,boolean... args) {
 		int iCntr = 0;
 		boolean selected = false;
 
@@ -560,11 +560,18 @@ public class Web {
 		while (lstIter.hasNext()) {
 			WebElement currElement = lstIter.next();
 			String txt = currElement.getText();
-			//if (txt.toUpperCase().contains(itemValue.toUpperCase())) {
+			if(args.length>0)
+			{
+			if (txt.toUpperCase().contains(itemValue.toUpperCase())) {
+				selected = true;
+				break;
+			}
+			}else{
 			if (txt.toUpperCase().equalsIgnoreCase(itemValue.toUpperCase())) {
 				selected = true;
 				break;
 			}
+		}
 			iCntr++;
 		}
 		if (selected)
@@ -589,13 +596,13 @@ public class Web {
 	 * @throws Exception
 	 */
 	public static boolean selectDropDownOption(Object pageClassObj,
-			String dropDownElementName, String selValue) throws Exception {
+			String dropDownElementName, String selValue,boolean... args) throws Exception {
 		int itemIndex = -1;
 		boolean selected = false;
 		String selectedItemText;
 
 		initDropDownObj(pageClassObj, dropDownElementName);
-		itemIndex = getDropDownItemIndex(selValue);
+		itemIndex = getDropDownItemIndex(selValue,args);
 
 		if (itemIndex > -1) {
 			selectedItemText = objSelect.getOptions().get(itemIndex).getText();
@@ -624,13 +631,14 @@ public class Web {
 	 *         <b>false</b> otherwise
 	 */
 	public static boolean selectDropDownOption(WebElement dropDownElement,
-			String selValue) {
+			String selValue,boolean...args ) {
 		int itemIndex = -1;
 		boolean selected = false;
 		String selectedItemText;
 
 		initDropDownObj(dropDownElement);
-		itemIndex = getDropDownItemIndex(selValue);
+		itemIndex = getDropDownItemIndex(selValue,args);
+
 
 		if (itemIndex > -1) {
 			selectedItemText = objSelect.getOptions().get(itemIndex).getText();
@@ -662,9 +670,9 @@ public class Web {
 	 * @throws Exception
 	 */
 	public static boolean verifyDropDownOptionExists(Object pageClassObj,
-			String dropDownElementName, String selValue) throws Exception {
+			String dropDownElementName, String selValue,boolean... args) throws Exception {
 		initDropDownObj(pageClassObj, dropDownElementName);
-		int itemIndex = getDropDownItemIndex(selValue);
+		int itemIndex = getDropDownItemIndex(selValue,args);
 		String selectedItemText;
 
 		if (itemIndex > -1) {
@@ -694,9 +702,9 @@ public class Web {
 	 *         <b>false</b> otherwise
 	 */
 	public static boolean verifyDropDownOptionExists(
-			WebElement dropDownElement, String selValue) {
+			WebElement dropDownElement, String selValue,boolean... args) {
 		initDropDownObj(dropDownElement);
-		int itemIndex = getDropDownItemIndex(selValue);
+		int itemIndex = getDropDownItemIndex(selValue,args);
 		String selectedItemText;
 
 		if (itemIndex > -1) {
@@ -729,9 +737,9 @@ public class Web {
 	 * @throws Exception
 	 */
 	public static String getDropDownOptionAsText(Object pageClassObj,
-			String dropDownElementName, String selValue) throws Exception {
+			String dropDownElementName, String selValue,boolean... args) throws Exception {
 		initDropDownObj(pageClassObj, dropDownElementName);
-		int itemIndex = getDropDownItemIndex(selValue);
+		int itemIndex = getDropDownItemIndex(selValue,args);
 		String selectedItemText;
 
 		if (itemIndex > -1) {
@@ -755,9 +763,9 @@ public class Web {
 	 *         is found <b>Empty string</b> otherwise
 	 */
 	public static String getDropDownOptionAsText(WebElement dropDownElement,
-			String selValue) {
+			String selValue,boolean... args) {
 		initDropDownObj(dropDownElement);
-		int itemIndex = getDropDownItemIndex(selValue);
+		int itemIndex = getDropDownItemIndex(selValue,args);
 		String selectedItemText;
 
 		if (itemIndex > -1) {
