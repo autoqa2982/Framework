@@ -6,7 +6,6 @@ import java.util.Map;
 
 import lib.Stock;
 
-
 public class Globals {
        
     	//General
@@ -52,6 +51,7 @@ public class Globals {
           public static String GC_OBJECT_SYNC_TIMEOUT = null ;
           
         //FileLocations
+          public static final String GC_COMMON_TESTDATALOC = "\\\\its\\\\fss\\\\DEVGHOME\\\\Automation-Selenium\\\\TestData\\\\" ;
           public static final String GC_TESTCASESLOC = System.getProperty("user.dir")+"\\RunOrderSheets\\";
           public static final String GC_TESTDATALOC = System.getProperty("user.dir")+"\\TestData\\";
           public static final String GC_TESTNG_XML_PATH = System.getProperty("user.dir")+"\\RunXML";
@@ -79,15 +79,13 @@ public class Globals {
          
          //Reading config
           static{
-        	  	Stock.getParam(Globals.GC_TESTCONFIGLOC+Globals.GC_CONFIGFILEANDSHEETNAME + ".xls"); 
-          }
-          
-          
+        	  //Stock.getParam(Globals.GC_TESTCONFIGLOC+Globals.GC_CONFIGFILEANDSHEETNAME + ".xls"); 
+        	  Stock.getParam(Globals.GC_TESTCONFIGLOC+Globals.GC_CONFIGFILEANDSHEETNAME + ".properties");
+          }         
  	  	 //CI         
        	  public static final String GC_EXECUTION_ENVIRONMENT = System.getProperties().containsKey("env")?
        			  												System.getProperty("env").toUpperCase()  :
-       			  												Stock.getConfigParam(GC_COLNAME_TEST_ENV); 
-                             
+       			  												Stock.getConfigParam(GC_COLNAME_TEST_ENV);                   
         //XML  
           public static final String GC_XML_SUITE = "suite";
           public static final String GC_XML_TEST = "test";
@@ -127,7 +125,7 @@ public class Globals {
           
                          
         //AAG Managed Accounts
-          public static final String GC_LOG_FILE_VALIDATION_MESSAGE="Successful-> "+"[1-9].*";
+         public static final String GC_LOG_FILE_VALIDATION_MESSAGE="Successful-> "+"[1-9].*";
           //Log File Patterns
           public static String GC_PROSPECT_LOG_FILE_PATTERN="";
           public static String GC_MEMBER_LOG_FILE_PATTERN="";
@@ -185,7 +183,7 @@ public class Globals {
   	    	//Dev databases
   	    	databaseConnectionStrings.put("D_INST", "jdbc:oracle:thin:@DINSTDB:1521/dinstmain.isis.gwl.com");
   	    	databaseConnectionStrings.put("D_PNP", "jdbc:oracle:thin:@dpnpdb:1521/dpnpmain.isis.gwl.com");
-  	    	databaseConnectionStrings.put("D_ISIS", "jdbc:oracle:thin:@disisdb:1521/disisbatch.isis.gwl.com");
+  	    	databaseConnectionStrings.put("D_ISIS", "jdbc:oracle:thin:@disisdb:1521/disismain.isis.gwl.com");
   	    	databaseConnectionStrings.put("D_CMNM", "jdbc:oracle:thin:@fsxd01dbad02:1521/dcmnmmain.isis.gwl.com");
   	    	databaseConnectionStrings.put("D_MISC", "jdbc:oracle:thin:@gp-pdb2:1521/D_MISC.ISIS.GWL.COM");
   	    	databaseConnectionStrings.put("D_AMA", "jdbc:oracle:thin:@Damadb:1521/damamain.isis.gwl.com");
@@ -203,7 +201,4 @@ public class Globals {
   	    	databaseConnectionStrings.put("Q_IN02", "jdbc:oracle:thin:@qin02db:1521/qin02main.isis.gwl.com");
   	    	databaseConnectionStrings.put("Q_ISIS", "jdbc:oracle:thin:@qisisdb:1521/QISISMAIN.ISIS.GWL.COM");
   	      }
-    	  
-    	
-    	  
 }

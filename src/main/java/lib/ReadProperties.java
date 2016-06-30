@@ -15,9 +15,7 @@ public class ReadProperties {
 	
 	public static void readAllProperties() {
 		try {
-			InputStream inStream = ReadProperties.class.getClassLoader().getResourceAsStream(DEFAULTPROPERTIESFILENAME);
-		
-			
+			InputStream inStream = ReadProperties.class.getClassLoader().getResourceAsStream(DEFAULTPROPERTIESFILENAME);	
 			if (inStream != null){
 				defaultProp.load(inStream);				
 			} else {			

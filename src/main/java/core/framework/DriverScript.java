@@ -42,18 +42,25 @@ public class DriverScript {
 		new DriverScript();		
 	}
 	
-	public DriverScript() throws Exception{
-		Log.Report(Level.INFO,Globals.GC_LOG_INIT_MSG);
-		testConfigPath = Globals.GC_TESTCONFIGLOC+Globals.GC_CONFIGFILEANDSHEETNAME+".xls";	
+	public DriverScript() throws Exception {
+		Log.Report(Level.INFO, Globals.GC_LOG_INIT_MSG);
+		// testConfigPath =
+		// Globals.GC_TESTCONFIGLOC+Globals.GC_CONFIGFILEANDSHEETNAME+".xls";
+		testConfigPath = Globals.GC_TESTCONFIGLOC
+				+ Globals.GC_CONFIGFILEANDSHEETNAME + ".properties";
 		ReadTestConfig();
-		//Checking if RunXML key has value set to "SelectXML" OR "";
-		if(Stock.getConfigParam(Globals.GC_KEY_RUNXML).trim().equalsIgnoreCase(Globals.GC_RUNXML_DEFAULT)||
-		   Stock.getConfigParam(Globals.GC_KEY_RUNXML).trim().equalsIgnoreCase(Globals.GC_EMPTY)){
-		   BuildTestNGXML();
+		// Checking if RunXML key has value set to "SelectXML" OR "";
+		if (Stock.getConfigParam(Globals.GC_KEY_RUNXML).trim()
+				.equalsIgnoreCase(Globals.GC_RUNXML_DEFAULT)
+				|| Stock.getConfigParam(Globals.GC_KEY_RUNXML).trim()
+						.equalsIgnoreCase(Globals.GC_EMPTY)) {
+			BuildTestNGXML();
 		}
-		//Commenting the run part of the testng xml since the run can be initiated by the individual project POM
-		//RunTestNG();	
+		// Commenting the run part of the testng xml since the run can be
+		// initiated by the individual project POM
+		// RunTestNG();
 	}
+
 /*  ------------------------------------------------------------------------------------------------------------------------------------------------------------
 FUNCTION:			ReadTestConfig()	
 DESCRIPTION:	    Reading Test Config sheet to access Driver script parameters  
