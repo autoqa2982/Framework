@@ -51,6 +51,7 @@ public class Globals {
           public static String GC_OBJECT_SYNC_TIMEOUT = null ;
           
         //FileLocations
+          public static final String GC_COMMON_TESTDATALOC = "\\\\its\\\\fss\\\\DEVGHOME\\\\Automation-Selenium\\\\TestData\\\\" ;
           public static final String GC_TESTCASESLOC = System.getProperty("user.dir")+"\\RunOrderSheets\\";
           public static final String GC_TESTDATALOC = System.getProperty("user.dir")+"\\TestData\\";
           public static final String GC_TESTNG_XML_PATH = System.getProperty("user.dir")+"\\RunXML";
@@ -182,7 +183,7 @@ public class Globals {
   	    	//Dev databases
   	    	databaseConnectionStrings.put("D_INST", "jdbc:oracle:thin:@DINSTDB:1521/dinstmain.isis.gwl.com");
   	    	databaseConnectionStrings.put("D_PNP", "jdbc:oracle:thin:@dpnpdb:1521/dpnpmain.isis.gwl.com");
-  	    	databaseConnectionStrings.put("D_ISIS", "jdbc:oracle:thin:@disisdb:1521/disisbatch.isis.gwl.com");
+  	    	databaseConnectionStrings.put("D_ISIS", "jdbc:oracle:thin:@disisdb:1521/disismain.isis.gwl.com");
   	    	databaseConnectionStrings.put("D_CMNM", "jdbc:oracle:thin:@fsxd01dbad02:1521/dcmnmmain.isis.gwl.com");
   	    	databaseConnectionStrings.put("D_MISC", "jdbc:oracle:thin:@gp-pdb2:1521/D_MISC.ISIS.GWL.COM");
   	    	databaseConnectionStrings.put("D_AMA", "jdbc:oracle:thin:@Damadb:1521/damamain.isis.gwl.com");
