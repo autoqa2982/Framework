@@ -8,9 +8,12 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
+
 import lib.Reporter.Status;
+
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -18,6 +21,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.firefox.internal.ProfilesIni;
@@ -27,6 +31,8 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.remote.RemoteWebDriver;
+
 import core.framework.Globals;
 
 public class Web {
@@ -135,18 +141,18 @@ public class Web {
 	 * @throws Exception
 	 */
 	public static boolean isWebElementDisplayed(Object pageClassObj,
-			String fieldName,boolean... waitForEle)  {
+			String fieldName, boolean... waitForEle) {
 		boolean blnElementDisplayed = false;
 		try {
 			WebElement displayedElement = getPageObjectFields(pageClassObj,
 					fieldName);
-			try{
+			try {
 				if (waitForEle.length > 0) {
 					if (waitForEle[0] == true) {
 						Web.waitForElement(displayedElement);
 					}
-				}	
-			}catch(Exception t){
+				}
+			} catch (Exception t) {
 				// nothing
 			}
 			blnElementDisplayed = displayedElement.isDisplayed();
@@ -295,7 +301,8 @@ public class Web {
 			element = (WebElement) getWebElementMethod.invoke(pageObjectClass,
 					fieldName);
 		} catch (Exception e) {
-			throw new Error("Error getting page obejct fields : "+ e.getMessage());
+			throw new Error("Error getting page obejct fields : "
+					+ e.getMessage());
 		}
 		return element;
 	}
@@ -397,7 +404,12 @@ public class Web {
 		} else if (webBrowser.trim().equalsIgnoreCase("CHROME")) {
 			System.setProperty("webdriver.chrome.driver",
 					Stock.getConfigParam("ChromeDriverClassPath"));
-			webDriver = new ChromeDriver();
+			String userProfile="C:\\Users\\"+System.getProperty("user.name")+"\\AppData\\Local\\Google\\Chrome\\User Data";
+			ChromeOptions opt = new ChromeOptions();
+            opt.addArguments("--user-data-dir="+userProfile);
+            
+            webDriver = new ChromeDriver(opt);
+
 		} else if (webBrowser.trim().equalsIgnoreCase("FIREFOX")
 				|| webBrowser.trim().equalsIgnoreCase("FF")) {
 			ProfilesIni profiles = new ProfilesIni();
@@ -415,8 +427,15 @@ public class Web {
 		} else {
 			throw new Error("Unknown browser type specified: " + webBrowser);
 		}
-
+		Capabilities cap = ((RemoteWebDriver) webDriver).getCapabilities();
+        String browserName = cap.getBrowserName().toUpperCase();
+        System.out.println("BROWSER NAME:"+browserName);
+        String os = cap.getPlatform().toString();
+        System.out.println("OPERATING SYSTEM:"+os);
+        String browserVersion = cap.getVersion().toString().substring(0, 4);
+        System.out.println("BROWSER VERSION:"+browserVersion);
 		webDriver.manage().window().maximize();
+		
 		return webDriver;
 	}
 
@@ -551,7 +570,7 @@ public class Web {
 	 * @param itemValue
 	 *            - Value of the item listed in Dropdown box
 	 */
-	private static int getDropDownItemIndex(String itemValue,boolean... args) {
+	private static int getDropDownItemIndex(String itemValue, boolean... args) {
 		int iCntr = 0;
 		boolean selected = false;
 
@@ -560,18 +579,17 @@ public class Web {
 		while (lstIter.hasNext()) {
 			WebElement currElement = lstIter.next();
 			String txt = currElement.getText();
-			if(args.length>0)
-			{
-			if (txt.toUpperCase().contains(itemValue.toUpperCase())) {
-				selected = true;
-				break;
+			if (args.length > 0) {
+				if (txt.toUpperCase().contains(itemValue.toUpperCase())) {
+					selected = true;
+					break;
+				}
+			} else {
+				if (txt.toUpperCase().equalsIgnoreCase(itemValue.toUpperCase())) {
+					selected = true;
+					break;
+				}
 			}
-			}else{
-			if (txt.toUpperCase().equalsIgnoreCase(itemValue.toUpperCase())) {
-				selected = true;
-				break;
-			}
-		}
 			iCntr++;
 		}
 		if (selected)
@@ -596,13 +614,14 @@ public class Web {
 	 * @throws Exception
 	 */
 	public static boolean selectDropDownOption(Object pageClassObj,
-			String dropDownElementName, String selValue,boolean... args) throws Exception {
+			String dropDownElementName, String selValue, boolean... args)
+			throws Exception {
 		int itemIndex = -1;
 		boolean selected = false;
 		String selectedItemText;
 
 		initDropDownObj(pageClassObj, dropDownElementName);
-		itemIndex = getDropDownItemIndex(selValue,args);
+		itemIndex = getDropDownItemIndex(selValue, args);
 
 		if (itemIndex > -1) {
 			selectedItemText = objSelect.getOptions().get(itemIndex).getText();
@@ -631,14 +650,13 @@ public class Web {
 	 *         <b>false</b> otherwise
 	 */
 	public static boolean selectDropDownOption(WebElement dropDownElement,
-			String selValue,boolean...args ) {
+			String selValue, boolean... args) {
 		int itemIndex = -1;
 		boolean selected = false;
 		String selectedItemText;
 
 		initDropDownObj(dropDownElement);
-		itemIndex = getDropDownItemIndex(selValue,args);
-
+		itemIndex = getDropDownItemIndex(selValue, args);
 
 		if (itemIndex > -1) {
 			selectedItemText = objSelect.getOptions().get(itemIndex).getText();
@@ -670,9 +688,10 @@ public class Web {
 	 * @throws Exception
 	 */
 	public static boolean verifyDropDownOptionExists(Object pageClassObj,
-			String dropDownElementName, String selValue,boolean... args) throws Exception {
+			String dropDownElementName, String selValue, boolean... args)
+			throws Exception {
 		initDropDownObj(pageClassObj, dropDownElementName);
-		int itemIndex = getDropDownItemIndex(selValue,args);
+		int itemIndex = getDropDownItemIndex(selValue, args);
 		String selectedItemText;
 
 		if (itemIndex > -1) {
@@ -702,9 +721,9 @@ public class Web {
 	 *         <b>false</b> otherwise
 	 */
 	public static boolean verifyDropDownOptionExists(
-			WebElement dropDownElement, String selValue,boolean... args) {
+			WebElement dropDownElement, String selValue, boolean... args) {
 		initDropDownObj(dropDownElement);
-		int itemIndex = getDropDownItemIndex(selValue,args);
+		int itemIndex = getDropDownItemIndex(selValue, args);
 		String selectedItemText;
 
 		if (itemIndex > -1) {
@@ -737,9 +756,10 @@ public class Web {
 	 * @throws Exception
 	 */
 	public static String getDropDownOptionAsText(Object pageClassObj,
-			String dropDownElementName, String selValue,boolean... args) throws Exception {
+			String dropDownElementName, String selValue, boolean... args)
+			throws Exception {
 		initDropDownObj(pageClassObj, dropDownElementName);
-		int itemIndex = getDropDownItemIndex(selValue,args);
+		int itemIndex = getDropDownItemIndex(selValue, args);
 		String selectedItemText;
 
 		if (itemIndex > -1) {
@@ -763,9 +783,9 @@ public class Web {
 	 *         is found <b>Empty string</b> otherwise
 	 */
 	public static String getDropDownOptionAsText(WebElement dropDownElement,
-			String selValue,boolean... args) {
+			String selValue, boolean... args) {
 		initDropDownObj(dropDownElement);
-		int itemIndex = getDropDownItemIndex(selValue,args);
+		int itemIndex = getDropDownItemIndex(selValue, args);
 		String selectedItemText;
 
 		if (itemIndex > -1) {
@@ -844,10 +864,23 @@ public class Web {
 			Globals.GBL_strScreenshotsFolderPath = "./TestReport/"
 					+ Globals.GBL_TestCaseName.replaceAll(" ", "_")
 					+ "\\Screenshots";
-			
-			File screenShotDir = new File(Globals.GBL_strScreenshotsFolderPath);
+
+			// File screenShotDir = new
+			// File(Globals.GBL_strScreenshotsFolderPath);
 			if (!new File(Globals.GBL_strScreenshotsFolderPath).exists())
 				new File(Globals.GBL_strScreenshotsFolderPath).mkdirs();
+			File screenShotDir = new File(Globals.GBL_strScreenshotsFolderPath);
+			if (!screenShotDir.exists()) {
+				// Try any one of these conditions
+				System.out.println("SCREENSHOT DIRECTORY IS NOT EXISTS");
+				Globals.GBL_strScreenshotsFolderPath = System
+						.getProperty("user.dir")
+						+ "/TestReport/"
+						+ Globals.GBL_TestCaseName.replaceAll(" ", "_")
+						+ "\\Screenshots";
+
+				screenShotDir = new File(Globals.GBL_strScreenshotsFolderPath);
+			}
 
 			int randomInt = screenShotDir.listFiles().length;
 			File scrFile = ((TakesScreenshot) Web.webdriver)
@@ -866,8 +899,10 @@ public class Web {
 			}
 
 		} catch (Exception e) {
+
 			e.printStackTrace();
 		}
+
 		return "./" + Globals.GBL_TestCaseName.replaceAll(" ", "_")
 				+ "\\Screenshots" + "\\" + fileName;
 	}
@@ -885,4 +920,47 @@ public class Web {
 		actions.moveToElement(webElement);
 		actions.build().perform();
 	}
+	
+
+    /**
+    * <pre>
+    * Method to select a specified item in Dropdown box on Multiple options basis
+    * </pre>
+    * 
+     * @param dropDownElement
+    *            - Dropdown WebElement
+    * @param selValue
+    *            - Value of the item listed in Dropdown box
+    * @return <b>boolean</b> - true</b> if the specified element is selected
+    *         <b>false</b> otherwise
+    */
+    public static boolean selectDropDownOptionVarArgs(
+                  WebElement dropDownElement, String... selValue) {
+           int itemIndex = -1;
+           boolean selected = false;
+           String selectedItemText;
+
+           initDropDownObj(dropDownElement);
+           if (selValue.length > 0) {
+                  for (int i = 0; i < selValue.length; i++) {
+                        itemIndex = getDropDownItemIndex(selValue[i]);
+                        if (itemIndex > 0) {
+                               break;
+                        }
+                  }
+           }
+           if (itemIndex > -1) {
+                  selectedItemText = objSelect.getOptions().get(itemIndex).getText();
+                  objSelect.selectByIndex(itemIndex);
+                  Reporter.logEvent(Status.INFO, "Select drop down box item: "
+                               + selValue, "Selected item: " + selectedItemText, false);
+                  selected = true;
+           } else {
+                  Reporter.logEvent(Status.WARNING, "Select drop down box item: "
+                               + selValue, "Option not present in the drop down box",
+                               false);
+           }
+           return selected;
+    }
+
 }

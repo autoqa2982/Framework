@@ -408,6 +408,16 @@ public class Stock {
 			}
 		}
 	}
+	
+	
+	public static String getTestDataAsString() throws Exception {
+		String printTestData="";
+		for (Map.Entry<String, String> entry : Stock.globalTestdata.entrySet()) {
+			if(!entry.getKey().equalsIgnoreCase("PASSWORD"))
+				printTestData=printTestData+entry.getKey() + "="+ entry.getValue() +"\n";
+		}
+	 return printTestData;
+	}
 
 	/**
 	 * <pre>Method to get test data</pre>

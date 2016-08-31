@@ -20,6 +20,7 @@ public class Globals {
           public static final String GC_AUT_TYPE = "WEB";
           public static final Map<String,String> DB_TYPE;
           public static final String GC_COLNAME_TEST_ENV="TEST_ENV";
+          public static final String GC_COLNAME_BROWSER="BROWSER";
           
         //Environment MAP for DB
           static{
@@ -85,7 +86,20 @@ public class Globals {
  	  	 //CI         
        	  public static final String GC_EXECUTION_ENVIRONMENT = System.getProperties().containsKey("env")?
        			  												System.getProperty("env").toUpperCase()  :
-       			  												Stock.getConfigParam(GC_COLNAME_TEST_ENV);                   
+       			  												Stock.getConfigParam(GC_COLNAME_TEST_ENV); 
+	public static String GC_CAPTURE_SCREENSHOT = System.getProperties()
+			.containsKey("CAPTURESCREENSHOT") ? System
+			.getProperty("CAPTURESCREENSHOT").trim().toUpperCase() : Stock
+			.getConfigParam("CAPTURESCREENSHOT");
+	public static final String GC_EXECUTION_BROWSER = System.getProperties().containsKey("BROWSER")?
+							System.getProperty("BROWSER").toUpperCase()  :
+							Stock.getConfigParam(GC_COLNAME_BROWSER); 
+			
+	public static final String option_UserDefault = "AS_USER_DEFINED";
+	public static final String option_Never = "NEVER";
+	public static final String option_OnFailure = "ON_FAILURE_ONLY";
+	public static final String option_Always = "ON_EVERY_STEP";
+
         //XML  
           public static final String GC_XML_SUITE = "suite";
           public static final String GC_XML_TEST = "test";
