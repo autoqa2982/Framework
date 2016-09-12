@@ -320,7 +320,7 @@ public class Web {
 					StaleElementReferenceException.class).until(
 					ExpectedConditions.visibilityOf(element));
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 	}
 
@@ -337,7 +337,7 @@ public class Web {
 					StaleElementReferenceException.class).until(
 					ExpectedConditions.visibilityOfAllElements(elements));
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 	}
 
@@ -406,8 +406,10 @@ public class Web {
 					Stock.getConfigParam("ChromeDriverClassPath"));
 			String userProfile="C:\\Users\\"+System.getProperty("user.name")+"\\AppData\\Local\\Google\\Chrome\\User Data";
 			ChromeOptions opt = new ChromeOptions();
+			//opt.addArguments("disable-extensions");
+			opt.addArguments("--start-maximized");
             opt.addArguments("--user-data-dir="+userProfile);
-            
+           
             webDriver = new ChromeDriver(opt);
 
 		} else if (webBrowser.trim().equalsIgnoreCase("FIREFOX")
@@ -434,7 +436,7 @@ public class Web {
         System.out.println("OPERATING SYSTEM:"+os);
         String browserVersion = cap.getVersion().toString().substring(0, 4);
         System.out.println("BROWSER VERSION:"+browserVersion);
-		webDriver.manage().window().maximize();
+		//webDriver.manage().window().maximize();
 		
 		return webDriver;
 	}
@@ -895,7 +897,7 @@ public class Web {
 			try {
 				Thread.sleep(5000);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+//				e.printStackTrace();
 			}
 
 		} catch (Exception e) {

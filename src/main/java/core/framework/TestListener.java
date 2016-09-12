@@ -141,6 +141,7 @@ public class TestListener implements ITestListener, IConfigurationListener2,
 	public void onFinish(ISuite suite) {
 		try {
 			if (Web.webdriver.getWindowHandles().size() >= 0)
+				Web.webdriver.close();
 				Web.webdriver.quit();
 		} catch (Exception e) {
 			ThrowException.Report(TYPE.EXCEPTION, "Failed to quit Web Driver :"
@@ -165,9 +166,9 @@ public class TestListener implements ITestListener, IConfigurationListener2,
 					: false);
 			
 			try {
-				Reporter.initializeReportForTC((currentTCInvocationCount + 1), Globals.GC_MANUAL_TC_NAME + "_"
+				/*Reporter.initializeReportForTC((currentTCInvocationCount + 1), Globals.GC_MANUAL_TC_NAME + "_"
 						+ Stock.getConfigParam("BROWSER"));
-				lib.Reporter.logEvent(Status.INFO,"Test Data used for this Test Case:",Stock.getTestDataAsString(),false);
+				lib.Reporter.logEvent(Status.INFO,"Test Data used for this Test Case:",Stock.getTestDataAsString(),false);*/
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -178,7 +179,7 @@ public class TestListener implements ITestListener, IConfigurationListener2,
 	public void afterInvocation(IInvokedMethod method, ITestResult testResult) {
 		try {
 			if (method.getTestMethod().isTest()) {
-				Reporter.finalizeTCReport();
+				//Reporter.finalizeTCReport();
 				if (!isFinalTestStatus()) {
 					testResult.setStatus(ITestResult.FAILURE);
 				}
