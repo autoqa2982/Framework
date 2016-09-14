@@ -161,6 +161,7 @@ public class Reporter {
                 public static void logEvent(Reporter.Status logStatus, String Step, String Details, boolean attachScreenshot) {
                                 /*Globals.GC_CAPTURE_SCREENSHOT = Stock
                                                                 .getConfigParam("CAPTURESCREENSHOT");*/
+                	Details = Details.replaceAll("&", "&amp;").replaceAll(">", "&gt;").replaceAll("<", "&lt;");
                                 if (Step.trim().length() == 0 && Details.trim().length() == 0 && attachScreenshot) {
                                                 Reporter.objReport.attachScreenshot(Web.captureScreenshot());
                                 } else if (Step.trim().length() == 0 && attachScreenshot) {
