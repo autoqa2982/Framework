@@ -42,6 +42,80 @@ public class Web {
 	public static Robot robot;
 	private static boolean isLastIteration = false;
 
+	private static ThreadLocal<WebDriver> multiDriver = new ThreadLocal<WebDriver>();
+	
+	/*
+	 * Multi thread functions
+	 * ://Driver will always be created first
+	 */
+	
+	public static WebDriver getDriver()
+	{
+		return multiDriver.get();
+	}
+	
+	public static WebDriver getDriver(String browserName)
+	{
+		WebDriver driver = multiDriver.get();
+		
+		if(driver == null)
+		{
+			if (browserName.trim().equalsIgnoreCase("INTERNET_EXPLORER")
+					|| browserName.trim().equalsIgnoreCase("IEXPLORE")
+					|| browserName.trim().equalsIgnoreCase("IE")) {
+				DesiredCapabilities capabilities = DesiredCapabilities
+						.internetExplorer();
+				capabilities.setCapability("ignoreZoomSetting", true);
+				capabilities.setCapability("ie.ensureCleanSession", true);
+				System.setProperty("webdriver.ie.driver",
+						Stock.getConfigParam("IEDriverClassPath"));
+				driver = new InternetExplorerDriver(capabilities);
+
+			} else if (browserName.trim().equalsIgnoreCase("CHROME")) {
+				System.setProperty("webdriver.chrome.driver",
+						Stock.getConfigParam("ChromeDriverClassPath"));
+				String userProfile="C:\\Users\\"+System.getProperty("user.name")+"\\AppData\\Local\\Google\\Chrome\\User Data";
+				ChromeOptions opt = new ChromeOptions();
+				//opt.addArguments("disable-extensions");
+				opt.addArguments("--start-maximized");
+	            opt.addArguments("--user-data-dir="+userProfile);
+	           
+	            driver = new ChromeDriver(opt);
+
+			} else if (browserName.trim().equalsIgnoreCase("FIREFOX")
+					|| browserName.trim().equalsIgnoreCase("FF")) {
+				ProfilesIni profiles = new ProfilesIni();
+				FirefoxProfile ffProfile = profiles.getProfile("default");
+				// ffProfile.setPreference("signon.autologin.proxy", true);
+
+				if (ffProfile == null) {
+					System.out.println("Initiating Firefox with dynamic profile");
+					driver = new FirefoxDriver();
+				} else {
+					System.out.println("Initiating Firefox with default profile");
+					driver = new FirefoxDriver(ffProfile);
+				}
+
+			} else {
+				throw new Error("Unknown browser type specified: " + browserName);
+			}
+			Capabilities cap = ((RemoteWebDriver) driver).getCapabilities();
+	        String browserNameValue = cap.getBrowserName().toUpperCase();
+	        System.out.println("BROWSER NAME:"+browserNameValue);
+	        String os = cap.getPlatform().toString();
+	        System.out.println("OPERATING SYSTEM:"+os);
+	        String browserVersion = cap.getVersion().toString().substring(0, 4);
+	        System.out.println("BROWSER VERSION:"+browserVersion);
+	        multiDriver.set(driver);
+		}
+		return driver;
+	}
+	
+	/*
+	 * Multi thread end
+	 * 
+	 */
+	
 	public static boolean isLastIteration() {
 		return isLastIteration;
 	}
@@ -410,7 +484,7 @@ public class Web {
 			opt.addArguments("--start-maximized");
             opt.addArguments("--user-data-dir="+userProfile);
            
-            webDriver = new ChromeDriver(opt);
+            webDriver = new ChromeDriver();
 
 		} else if (webBrowser.trim().equalsIgnoreCase("FIREFOX")
 				|| webBrowser.trim().equalsIgnoreCase("FF")) {

@@ -103,15 +103,15 @@ public class TestListener implements ITestListener, IConfigurationListener2,
 	}
 
 	public void onTestSuccess(ITestResult result) {
-
+		System.out.println("This is on onTestSuccess");
 	}
 
 	public void onTestFailure(ITestResult result) {
-
+		System.out.println("This is on test failure");
 	}
 
 	public void onTestSkipped(ITestResult result) {
-
+		System.out.println("This is on onTestSkipped");
 	}
 
 	public void onTestFailedButWithinSuccessPercentage(ITestResult result) {
