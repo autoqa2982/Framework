@@ -27,7 +27,8 @@ public class TestListener implements ITestListener, IConfigurationListener2,
 
 	int currentTCInvocationCount = 0;
 	private static boolean finalTestStatus = true;
-
+	int browserIndex = 0;
+	
 	private boolean isFinalTestStatus() {
 		return finalTestStatus;
 	}
@@ -84,8 +85,9 @@ public class TestListener implements ITestListener, IConfigurationListener2,
 				Log.Report(Level.INFO,
 						"Web Driver instance found to be inactive for the Test Case :"
 								+ test.getName() + " ,hence re-initiating");
-				Web.webdriver = Web.getWebDriver(Stock
-						.getConfigParam("BROWSER"));
+				String BrowserVar = "BROWSER" + GetBrowserCurrentIndex();
+				Web.webdriver = Web.getDriver(Stock
+						.getConfigParam(BrowserVar));
 				Log.Report(Level.INFO,
 						"Web Driver instance re-initiated successfully the Test Case :"
 								+ test.getName());
@@ -189,5 +191,16 @@ public class TestListener implements ITestListener, IConfigurationListener2,
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public int GetBrowserCurrentIndex()
+	{
+		if(browserIndex < 3)
+		{
+			browserIndex++;
+			return browserIndex;
+		}
+		browserIndex = 0;
+		return browserIndex;
 	}
 }

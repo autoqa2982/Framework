@@ -121,110 +121,6 @@ public class Stock {
 		return null;
 
 	}
-
-	
-	public static LinkedHashMap<Integer, Map<String, String>> getTestData(
-			String tcAbsPath, String tcName)
-			throws ParserConfigurationException {
-		LinkedHashMap<Integer, Map<String, String>> td = null;
-		Map<String, String> mapData = null;
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-		String appName = getConfigParam("AUT");
-		String modName = tcAbsPath.split("\\.")[(tcAbsPath.split("\\.").length) - 1];
-
-		try {
-			/*File xmlfile = new File(Globals.GC_TESTDATALOC
-					+ Globals.GC_TESTDATAPREFIX + appName + "_"
-					+ checkEnv(getConfigParam("TEST_ENV")) + ".xml");*/
-			File xmlfile ;
-			if (System.getProperties().containsKey("testDataPath")
-					&& System.getProperty("testDataPath").equalsIgnoreCase(
-							"true")) {
-				xmlfile = new File(Globals.GC_COMMON_TESTDATALOC + appName
-						+ "\\\\" + Globals.GC_TESTDATAPREFIX + appName + "_"
-						+ checkEnv(getConfigParam("TEST_ENV")) + ".xml");
-			} else {
-				xmlfile = new File(Globals.GC_TESTDATALOC
-						+ Globals.GC_TESTDATAPREFIX + appName + "_"
-						+ checkEnv(getConfigParam("TEST_ENV")) + ".xml");
-			}
-			
-			Document doc = dBuilder.parse(xmlfile);
-			doc.getDocumentElement().normalize();
-			td = new LinkedHashMap<Integer, Map<String, String>>();
-			NodeList nList = doc.getElementsByTagName("Module");
-
-			for (int temp = 0; temp < nList.getLength(); temp++) {
-
-				Node nNode = nList.item(temp);
-
-	  if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-	  
-	  Element eElement = (Element) nNode;
-	  
-					String name = eElement.getAttribute("name");
-					if (name.equals(modName)) {
-						// System.out.println(name);
-						NodeList testcaseList = eElement
-								.getElementsByTagName("TestCase");
-						for (int temp1 = 0; temp1 < testcaseList.getLength(); temp1++) {
-							Node testCaseNode = testcaseList.item(temp1);
-							Element testCaseElement = (Element) testCaseNode;
-							if (testCaseElement.getAttribute("name").equals(
-									tcName)) {
-								NodeList iterationList = testCaseElement
-										.getElementsByTagName("Iteration"); //
-								System.out.println(iterationList.getLength());
-								for (int iteration = 0; iteration < iterationList
-										.getLength(); iteration++) {
-									Node iterationNode = iterationList
-											.item(iteration);
-									Element iterationElement = (Element) iterationNode;
-
-									if (iterationElement.getAttribute(
-											"Execution").equals("Yes")) {
-										mapData = new HashMap<String, String>();
-										int key = Integer
-												.parseInt(iterationElement
-														.getAttribute("id"));
-
-										NodeList parameterList = iterationElement
-												.getElementsByTagName("parameter");
-
-										for (int parameter = 0; parameter < parameterList
-												.getLength(); parameter++) {
-											Node parameterNode = parameterList
-													.item(parameter);
-											Element parameterElement = (Element) parameterNode;
-
-											mapData.put(
-													parameterElement
-															.getAttribute(
-																	"name")
-															.toUpperCase(),
-													parameterElement
-															.getAttribute("value"));
-										}
-										if (!td.containsKey(key))
-											td.put(key, mapData);
-									}
-								}
-								break;
-							}
-						}
-						break;
-					}
-				}
-			} //
-			System.out.println(td);
-			return td;
-		} catch (Exception e) {
-			ThrowException.Report(TYPE.EXCEPTION,
-					"Exception at getLoopIndex() : " + e.getMessage());
-		}
-		return null;
-	}
 	 
 	public static Map<String, String> getLoopIndex(String indexString) {
 		String GET_INDEX_PATTERN = "[0-9,>temp]+";
@@ -425,7 +321,7 @@ public class Stock {
 	 * @param tcName
 	 * @return
 	 */
-	/*public static LinkedHashMap<Integer, Map<String, String>> getTestData(
+	public static LinkedHashMap<Integer, Map<String, String>> getTestData(
 			String tcAbsPath, String tcName) {
 		Stock.iterationNumber = 0;
 		Log.Report(Level.INFO, Globals.GC_LOG_INITTC_MSG + tcAbsPath + "."
@@ -553,6 +449,6 @@ public class Stock {
 							+ e.getMessage());
 		}
 		return null;
-	}*/
+	}
 
 }
